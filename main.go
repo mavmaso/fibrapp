@@ -1,15 +1,17 @@
 package main
 
 import (
-	"fibrapp/router"
-
-	"github.com/gofiber/fiber/v2"
+	"fibrapp/server"
+	"fibrapp/web"
 )
 
 func main() {
-	app := fiber.New()
+	config := server.ServerConfig{
+		DBConfig: "host=localhost user=postgres password=postgres dbname=fibrapp_dev port=5432 sslmode=disable",
+	}
 
-	router.SetupRoutes(app)
+	app := server.NewServer(config)
+	web.SetupRoutes(app)
 
 	app.Listen(":3000")
 }
