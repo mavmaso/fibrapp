@@ -1,4 +1,4 @@
-package router
+package web
 
 import "github.com/gofiber/fiber/v2"
 
@@ -8,4 +8,8 @@ func SetupRoutes(app *fiber.App) {
 	router.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello Mundo")
 	})
+
+	api := router.Group("/api")
+
+	api.Get("/articles", ListArticle)
 }
