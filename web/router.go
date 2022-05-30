@@ -12,4 +12,5 @@ func SetupRoutes(app *fiber.App) {
 	api := router.Group("/api")
 
 	api.Get("/articles", ListArticle)
+	api.Get("/articles/:id", ShowArticle)
 }
