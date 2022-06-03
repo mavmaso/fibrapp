@@ -4,22 +4,30 @@ import (
 	"fibrapp/db"
 
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 type ServerConfig struct {
 	DBConfig string
 }
 
-func NewServer(config ServerConfig) *fiber.App {
-	app := fiber.New()
+type App struct {
+	DB     *gorm.DB
+	Server *fiber.App
+}
 
-	SetMiddlewares(app, config.DBConfig)
+func NewServer(config ServerConfig) App {
+	app := App{
+		Server: fiber.New(),
+		DB:     db.InitDB(config.DBConfig),
+	}
+
+	SetMiddlewares(app.Server, app.DB)
 
 	return app
 }
 
-func SetMiddlewares(app *fiber.App, config string) {
-	db := db.InitDB(config)
+func SetMiddlewares(app *fiber.App, db *gorm.DB) {
 	app.Use(func(c *fiber.Ctx) error {
 		c.Locals("db", db)
 		return c.Next()
