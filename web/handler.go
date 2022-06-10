@@ -21,7 +21,11 @@ func ShowArticle(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	article := new(models.Article)
-	db.First(&article, id)
+	result := db.First(&article, id)
+
+	if result.Error != nil {
+		return c.Status(404).SendString(result.Error.Error())
+	}
 
 	return c.JSON(article)
 }

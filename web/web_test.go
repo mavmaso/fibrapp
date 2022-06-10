@@ -41,6 +41,20 @@ func TestShowArticle(t *testing.T) {
 	assert.Equalf(t, string(expected), string(body), "same content")
 }
 
+func TestDontShowArticle(t *testing.T) {
+	app := setupTest()
+
+	article := 0
+	uri := fmt.Sprintf("/api/articles/%v", article)
+
+	req := httptest.NewRequest("GET", uri, nil)
+	resp, _ := app.Server.Test(req, -1)
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	assert.Equalf(t, fiber.StatusNotFound, resp.StatusCode, "status 404")
+	assert.Equalf(t, "record not found", string(body), "same content")
+}
+
 func TestListArticles(t *testing.T) {
 	app := setupTest()
 
