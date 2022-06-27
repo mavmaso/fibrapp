@@ -11,7 +11,7 @@ func main() {
 	}
 
 	app := server.NewServer(config)
-	web.SetupRoutes(app)
+	web.SetupRoutes(app.Server)
 
-	app.Listen(":3000")
+	app.Server.Listen(":3000")
 }
